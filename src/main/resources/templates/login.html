@@ -9,29 +9,40 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
 </head>
 <body>
-<div class="container">
-    <form class="form-signin" method="post" th:action="@{/login}">
-        <div th:if="${param.error}" class="alert alert-danger" role="alert">
-            Invalid username or password.
+<div class="container-fluid">
+    <h1 class="d-flex justify-content-center font-weight-bold">Reserva</h1>
+    <br>
+
+    <div class="row justify-content-md-center align-items-center">
+        <div class="col" style="background:#D9D9D9; height:600px;">
+
         </div>
-        <div th:if="${param.logout}" class="alert alert-success" role="alert">
-            You have been logged out.
+        <div class="col">
+            <form class="form-signin" method="post" th:action="@{/login}">
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    Invalid username or password.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                    You have been logged out.
+                </div>
+
+                <h4 class="form-signin-heading">Login</h4>
+                <p>
+                    <label for="username" class="sr-only">Email</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="email..." required autofocus>
+                </p>
+                <p>
+                    <label for="password" class="sr-only">Senha</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="senha..." required>
+                </p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" href="http://127.0.0.1:4200/home">Fazer Login</button>
+                <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/google-idp" role="link" style="text-transform: none;">
+                    <img width="40" style="margin-right: 5px;" alt="Sign in with Google" src="https://logowik.com/content/uploads/images/985_google_g_icon.jpg" />
+                    Logar com conta Google
+                </a>
+            </form>
         </div>
-        <h2 class="form-signin-heading">Sign In</h2>
-        <p>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/google-idp" role="link" style="text-transform: none;">
-            <img width="40" style="margin-right: 5px;" alt="Sign in with Google" src="https://logowik.com/content/uploads/images/985_google_g_icon.jpg" />
-            Sign in with Google
-        </a>
-    </form>
+    </div>
 </div>
 </body>
 </html>
