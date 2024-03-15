@@ -11,11 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping(value = "", method = RequestMethod.GET)
 public class HomeController {
-//    @GetMapping
-//    public ModelAndView method() {
-//        String projectUrl = "http://127.0.0.1:4200/home";
-//        return new ModelAndView("redirect:" + projectUrl);
-//    }
     @GetMapping
     public ResponseEntity<String> getHome(){
         return ResponseEntity.ok("Reserva.com");
