@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.session.SessionRegistry;
@@ -35,6 +36,9 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -56,6 +60,8 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final ClientService clientService;
     private final GoogleUserRepository googleUserRepository;
+
+    private static final String CUSTOM_CONSENT_PAGE = "/oauth2/consent";
     private AuthenticationSuccessHandler authenticationSuccessHandler(){
         return new FederatedIdentityAuthenticationSuccessHandler();
     }
@@ -66,14 +72,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth/**", "/client/**"));
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                .authorizationEndpoint(auth -> auth.consentPage(CUSTOM_CONSENT_PAGE))
                 .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
-
         http.oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
-        http.exceptionHandling(exception -> exception.defaultAuthenticationEntryPointFor(
+        http.exceptionHandling(exceptions -> exceptions.defaultAuthenticationEntryPointFor(
                 new LoginUrlAuthenticationEntryPoint("/login"),
                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
         )).oauth2ResourceServer(resource -> resource.jwt(Customizer.withDefaults()));
-        http.apply(new FederatedIdentityConfigurer());
         return http.build();
     }
 
@@ -87,10 +92,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/auth/**", "/client/**", "/login").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/services").permitAll()
-                                .requestMatchers("/users").hasAuthority("ADMIN")
-                                .requestMatchers("/services/**").hasAuthority("ADMIN")
+                                .requestMatchers("/auth/**", "/client/**", "/login", "/resource/users/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/resource/users/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(login -> login.loginPage("/login"))
@@ -101,7 +104,6 @@ public class SecurityConfig {
         http.logout(logout -> logout.logoutSuccessUrl("http://127.0.0.1:4200/logout"));
         return http.build();
     }
-
     @Bean
     public SessionRegistry sessionRegistry(){
         return new SessionRegistryImpl();
@@ -133,7 +135,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(){
-        return AuthorizationServerSettings.builder().issuer("http://localhost:9000").build();
+        return AuthorizationServerSettings.builder().issuer("http://127.0.0.1:9000").build();
     }
 
     @Bean
@@ -166,4 +168,5 @@ public class SecurityConfig {
         }
         return keyPair;
     }
+
 }

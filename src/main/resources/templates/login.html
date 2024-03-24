@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container-fluid">
-    <h1 class="d-flex justify-content-center" style="font-weight:900; font-family:'Roboto'">Reserva</h1>
+    <h1 class="d-flex justify-content-center" style="font-weight:900; font-family:'Roboto';color:#003594;">Reserva</h1>
     <br>
 
     <div class="row justify-content-md-center align-items-center">
@@ -26,7 +26,7 @@
                     You have been logged out.
                 </div>
 
-                <h4 class="form-signin-heading">Login</h4>
+                <h4 class="form-signin-heading" style="color:#003594;">Login</h4>
                 <p>
                     <label for="username" class="sr-only">Email</label>
                     <input type="text" id="username" name="username" class="form-control" placeholder="email..." required autofocus>
@@ -37,9 +37,19 @@
                 </p>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" >Fazer Login</button>
                 <a class="btn btn-light btn-block bg-white" href="/oauth2/authorization/google-idp" role="link" style="text-transform: none;">
-                    <img width="40" style="margin-right: 5px;" alt="Sign in with Google" src="https://logowik.com/content/uploads/images/985_google_g_icon.jpg" />
+                    <img width="40" style="margin-right: 5px;" alt="Logar com conta Google" src="https://logowik.com/content/uploads/images/985_google_g_icon.jpg" />
                     Logar com conta Google
                 </a>
+                <div class="row" style="margin-top:10px">
+                <div class="col-7">
+                    <a role="link" style="text-transform: none; font-size:12px">
+                        Não possui uma conta ainda?
+                    </a>
+                </div>
+                <div class="col-5">
+                    <a href="http://127.0.0.1:8081/register" style="text-decoration: none"><button class="btn btn-sm btn-primary btn-block" type="button">Criar Conta</button></a>
+                </div>
+                </div>
             </form>
         </div>
     </div>

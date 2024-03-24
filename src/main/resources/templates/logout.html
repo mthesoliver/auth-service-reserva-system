@@ -10,11 +10,12 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center">You really want to log out?</h2>
+    <h2 class="text-center">Você deseja mesmo sair?</h2>
     <form class="form-signin" method="post" th:action="@{/logout}">
-        <button class="btn btn-lg btn-outline-primary btn-block" type="submit">Yes</button>
-        <a th:href="@{http://127.0.0.1:4200}" style="text-decoration:none">
-            <button class="btn btn-lg btn-outline-secondary btn-block" type="button">No</button>
+        <button class="btn btn-lg btn-outline-primary btn-block" type="submit">Sim</button>
+        <br>
+        <a th:href="@{http://127.0.0.1:4200/home}" style="text-decoration:none">
+            <button class="btn btn-lg btn-outline-secondary btn-block" type="button">Não</button>
         </a>
     </form>
 </div>
